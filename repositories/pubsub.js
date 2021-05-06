@@ -6,7 +6,6 @@ async function createTopic(topicName){
     try {
         console.log('in creating pub/sub topic');
         await pubSubClient.createTopic(topicName,{autoCreate: true});
-        await pubSubClient.topic(topicName).createSubscription(process.env.SUB_NAME);  
         console.log('done creating pub/sub topic');
     } catch (error) {
         console.log('in error logging when creating pub/sub topic');

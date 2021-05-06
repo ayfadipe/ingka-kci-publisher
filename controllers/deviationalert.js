@@ -1,5 +1,4 @@
 const { publishMessage,SubscriberToTopic} = require('../repositories/pubsub');
-const deviationTopicName = process.env.TOPIC_NAME;
 
 module.exports = {
   deviationalerts: (req, res) => {
@@ -10,13 +9,18 @@ module.exports = {
   },
 
   
-  createDeviation: async (req, res) => {
-    const messageId = await publishMessage(deviationTopicName,req.body);
-    res.status(200).json({
-      success: true,
-      data: `Message ${messageId} published `
-    });
-  },
+receiveDeviation: async (req, res) => {
+    try {
+      await SubscriberToMessages(process.env.TOPIC_NAME, process.env.SUBSCRIPTION_NAME, process.env.TIME_OUT);            
+   } catch (error) {
+       return res.status(500).json({
+           success: false,
+           message: "Couldn't recieve deviation alert :)",
+           data: error
+       })                        
+   }
+  }
+
 
 };
 
